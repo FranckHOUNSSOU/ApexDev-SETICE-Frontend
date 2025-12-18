@@ -1,4 +1,4 @@
-// src/components/pages/EspacePedagogique.tsx
+// Fichier : src/components/pages/EspacePedagogique.tsx
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';

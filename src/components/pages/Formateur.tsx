@@ -12,7 +12,9 @@ const Formateur: React.FC = () => {
   ];
 
   return (
+
     <div>
+      
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Gestion des Formateurs</h1>
         <Button variant="success">Ajouter un formateur</Button>

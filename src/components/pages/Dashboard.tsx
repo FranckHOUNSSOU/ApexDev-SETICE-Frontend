@@ -1,8 +1,7 @@
-// src/components/pages/Dashboard.tsx
+// Fichier : src/components/pages/Dashboard.tsx
 import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {Card,CardBody,Row,Col,Button} from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 // Utilisez les bons noms d'icônes
 import { 
   BarChartFill, 
@@ -12,54 +11,78 @@ import {
 } from 'react-bootstrap-icons';
 
 const Dashboard: React.FC = () => {
-  const stats = [
-    { 
-      title: 'Étudiants actifs', 
-      value: '1,245', 
-      icon: <PeopleFill size={30} />, 
-      color: 'primary' 
-    },
-    { 
-      title: 'Cours disponibles', 
-      value: '48', 
-      icon: <BookFill size={30} />, 
-      color: 'success' 
-    },
-    { 
-      title: 'Formateurs', 
-      value: '32', 
-      icon: <PersonBadgeFill size={30} />, 
-      color: 'warning' 
-    },
-    { 
-      title: 'Taux de complétion', 
-      value: '78%', 
-      icon: <BarChartFill size={30} />, 
-      color: 'info' 
-    },
-  ];
+
+  const WIDGETS = [
+  {
+    label: "Étudiants actifs",
+    value: '1,245',
+    icon: <PeopleFill size={30} />,
+    color: "primary",
+    link: "total",
+  },
+  {
+    label: "Cours disponibles",
+    value: '48',
+    icon:<BookFill size={30} />,
+    color: "success",
+    link: "upcoming",
+  },
+  {
+    label: "Formateurs",
+    value: '32',
+    icon:<PersonBadgeFill size={30} />,
+    color: "warning",
+    link: "pending",
+  },
+  {
+    label: "Taux de complétion",
+    value: '78%',
+    icon:<BarChartFill size={30} />,
+    color: "info",
+    link: "missed",
+  },
+  
+];
+
+  const navigate = useNavigate();
 
   return (
     <div className="dashboard">
-      <h1 className="mb-4">Tableau de Bord</h1>
-      <Row className="mb-4">
-        {stats.map((stat, index) => (
-          <Col md={3} sm={6} key={index} className="mb-3">
-            <Card className={`text-white bg-${stat.color} h-100`}>
-              <Card.Body className="d-flex align-items-center">
-                <div className="me-3">{stat.icon}</div>
-                <div>
-                  <Card.Title className="mb-1">{stat.value}</Card.Title>
-                  <Card.Text>{stat.title}</Card.Text>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
       
+      <h1 className="mb-4">Tableau de Bord</h1>
+      <div className="row gy-5 mb-5" style={{}}>
+        {WIDGETS.map((widget, idx) => {
+          return (
+            <div className="col-sm-3 col-6" key={idx}>
+              <Card className="card-flush border-0 h-100">
+                <CardBody className="d-flex align-items-center">
+                  <div className="me-5">
+                    {/*<img src={widget.icon} className="h-40px" />*/}
+                    {widget.icon}
+                  </div>
+
+                  <div className="d-flex flex-column">
+                    <h2 className={"mb-1 fw-semibold fs-3x lh-1 ls-n2 text-"+widget.color}>
+                      {widget.value}
+                    </h2>
+                    <div className="text-muted fw-bold">
+                      <div className="m-0 mb-2">
+                        <span className="fw-semibold fs-6 text-gray-400">
+                          {widget.label}
+                        </span>
+                      </div>
+                      {/* <a href={}>view</a> */}
+                      {/*{widget.link && <Link to={widget.link}>view</Link>}*/}
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+          );
+        })}
+      </div>
       <Row>
-        <Col md={8}>
+        <Col md={12}>
           <Card className="mb-4">
             <Card.Header>
               <Card.Title>Activité récente</Card.Title>
@@ -71,24 +94,6 @@ const Dashboard: React.FC = () => {
                 <li className="list-group-item">3 devoirs soumis aujourd'hui</li>
                 <li className="list-group-item">Mise à jour du système terminée</li>
               </ul>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          <Card>
-            <Card.Header>
-              <Card.Title>Notifications</Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <div className="alert alert-info">
-                <small>2 messages non lus</small>
-              </div>
-              <div className="alert alert-warning">
-                <small>1 devoir en attente</small>
-              </div>
-              <div className="alert alert-success">
-                <small>3 cours complétés cette semaine</small>
-              </div>
             </Card.Body>
           </Card>
         </Col>

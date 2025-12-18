@@ -1,0 +1,25 @@
+:root {
+  --primary-color: #4361ee;
+  --primary-dark: #3a56d4;
+  --secondary-color: #4cc9f0;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+  --gray-light: #e9ecef;
+  --gray-medium: #adb5bd;
+  --gray-dark: #6c757d;
+  --success-color: #4bb543;
+  --danger-color: #dc3545;
+  --border-radius: 12px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+}
+.app-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 0.2rem;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
