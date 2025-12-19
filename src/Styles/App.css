@@ -60,6 +60,29 @@ html, body {
   transition: all 0.3s ease;
 }
 
+/* Couleurs des liens dans la barre latérale : inactifs gris, actifs bleu */
+.sidebar .nav-link {
+  color: #6c757d; /* gris neutre pour éléments non actifs */
+}
+
+.sidebar .nav-link.active {
+  color: #0d6efd !important; /* couleur primaire pour élément actif */
+  font-weight: 500;
+}
+
+.sidebar .nav-link:hover {
+  color: #0d6efd;
+}
+
+/* Sous-menu Paramètre */
+.sidebar-submenu .nav-link {
+  color: #6c757d;
+}
+
+.sidebar-submenu .nav-link.active {
+  color: #0d6efd;
+}
+
 .sidebar {
   background-color: #ffffffc8;
   border-right: 1px solid #dee2e6;
@@ -88,7 +111,45 @@ html, body {
   border-radius: 6px;
   padding: 0;
 }
+/* Submenu du Sidebar */
+.sidebar-submenu {
+  padding-left: 8px;
+}
 
+.sidebar-submenu .nav-link {
+  padding-left: 1.6rem;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+.sidebar-submenu .nav-link.active {
+  color: #212529;
+}
+
+/* Flèche du menu Paramètre */
+.sidebar-chev {
+  margin-left: 2rem; /* espacement demandé */
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  color: #6c757d;
+}
+
+.sidebar-chev.open {
+  background: rgba(13,110,253,0.08);
+  color: #0d6efd;
+  transform: rotate(0deg);
+}
+
+.sidebar-chev.closed {
+  background: transparent;
+  color: #6c757d;
+  transform: rotate(0deg);
+}
 /* Rendre le conteneur de page plein largeur sur petits écrans */
 @media (max-width: 768px) {
   .page-container {
