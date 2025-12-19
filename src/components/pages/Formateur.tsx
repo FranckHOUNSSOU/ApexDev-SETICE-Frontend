@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from 'react-bootstrap';
 import DataTable, { type TableColumn } from "react-data-table-component";
 
 type Formateur = {
@@ -245,10 +244,45 @@ const GestionFormateurs: React.FC = () => {
   // RENDER
   // =======================
   return (
-    <div>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gestion des Formateurs</h1>
-        <Button variant="success">Ajouter un formateur</Button>
+    <div style={{// maxWidth: "1100px", margin: "40px auto", padding: "20px",
+
+  maxWidth: "1100px", 
+  margin: "40px auto", 
+  padding: "20px",
+  border: "1px solid #e5e7eb", // ← Ajoutez cette ligne
+  borderRadius: "10px",         // ← Ajoutez cette ligne
+  boxShadow: "0 2px 8px rgba(0,0,0,0.1)" // ← Optionnel
+
+
+
+
+     }}>
+      {/* TITRE + BOUTON */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h2>Gestion des Formateurs</h2>
+
+        {!showForm && (
+          <button
+            onClick={() => setShowForm(true)}
+            style={{
+              background: "#3b82f6",
+              color: "#fff",
+              padding: "10px 18px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            + Créer un formateur
+          </button>
+        )}
       </div>
 
       {/* FORMULAIRE AJOUT */}
