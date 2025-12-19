@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Dropdown, Image, Button } from 'react-bootstrap';
+import { Dropdown, Image, Button, Badge } from 'react-bootstrap';
 import { FaUser, FaBell, FaSignOutAlt, FaChevronDown } from 'react-icons/fa';
+import { BsBell } from 'react-icons/bs';
 
 function HeaderUserbox() {
   const navigate = useNavigate();
@@ -80,6 +81,16 @@ const initials = (a: string, b: string) => {
   }, []);*/
 
   return (
+    <>
+    <div>
+      <Button 
+        variant="link" 
+        className="d-flex align-items-center mt-3 text-decoration-none p-2 border-0 bg-transparent"
+        onClick={() => navigate('/management/notifications')}
+      >
+        <BsBell size={25} />
+      </Button>
+    </div>
     <Dropdown align="end">
       <Dropdown.Toggle 
         variant="link" 
@@ -119,6 +130,7 @@ const initials = (a: string, b: string) => {
         </Dropdown.Item> 
       </Dropdown.Menu>
     </Dropdown>
+    </>
   );
 }
 
