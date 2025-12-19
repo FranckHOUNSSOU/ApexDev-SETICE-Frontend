@@ -11,6 +11,9 @@ import Etudiant from './components/pages/Etudiant';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Profile from './components/pages/Parametres/Profile';
+import Notifications from './components/pages/Parametres/Notifications';
+import Rapports from './components/pages/Parametres/Rapports';
 import './styles/App.css';
 
 function MainLayout({ toggleSidebar, sidebarCollapsed, isMobile }: { toggleSidebar: () => void; sidebarCollapsed: boolean; isMobile: boolean }) {
@@ -83,6 +86,9 @@ function App() {
           <Route path="/espace-pedagogique" element={<EspacePedagogique />} />
           <Route path="/formateur" element={<Formateur />} />
           <Route path="/etudiant" element={<Etudiant />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/rapports" element={<Rapports />} />
         </Route>
       </Routes>
     </Router>
