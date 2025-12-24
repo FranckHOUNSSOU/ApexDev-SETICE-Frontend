@@ -229,13 +229,14 @@ const Promotions: React.FC = () => {
     try {
       if (selectedPromotion) {
         setPromotions(prev => prev.map(p => 
-          p.id === selectedPromotion.id ? { ...data, id: p.id } : p
+          p.id === selectedPromotion.id ? { ...data, id: p.id, nombreEtudiants: 0 } : p
         ));
         showNotification('Promotion modifiée avec succès', 'success');
       } else {
         const newPromotion: Promotion = {
           id: promotions.length > 0 ? Math.max(...promotions.map(p => p.id)) + 1 : 1,
-          ...data
+          ...data,
+          nombreEtudiants: 0
         };
         setPromotions(prev => [...prev, newPromotion]);
         showNotification('Promotion ajoutée avec succès', 'success');
