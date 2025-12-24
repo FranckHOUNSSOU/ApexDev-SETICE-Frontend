@@ -35,23 +35,22 @@ import {
   FilterList as FilterListIcon,
   Clear as ClearIcon
 } from '@mui/icons-material';
-import * as XLSX from 'xlsx';
 
 import { PromotionDetailsModal } from './PromotionDetailsModal';
 import { PromotionFormModal } from './PromotionFormModal';
+import { ConfirmationModal } from './ConfirmationModal';
 import { promotionService } from '../../../Services/promotionService';
 import type { Promotion, PromotionFormData } from '../../../types/promotion';
 
 // ============================================================================
 // Composant Menu Actions
 interface ActionsMenuProps {
-  promotion: Promotion;
   onView: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const ActionsMenu: React.FC<ActionsMenuProps> = ({ promotion, onView, onEdit, onDelete }) => {
+const ActionsMenu: React.FC<ActionsMenuProps> = ({ onView, onEdit, onDelete }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -167,6 +166,18 @@ const Promotions: React.FC = () => {
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showFilters, setShowFilters] = useState(true);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [promotionToDelete, setPromotionToDelete] = useState<Promotion | null>(null);
+  
+  const [notification, setNotification] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+  }>({
+    show: false,
+    message: '',
+    type: 'info'
+  });
   
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
@@ -201,6 +212,16 @@ const Promotions: React.FC = () => {
     setSnackbar({ open: true, message, severity });
   }, []);
 
+  // Auto-fermeture de la notification centrée après 5 secondes
+  useEffect(() => {
+    if (notification.show) {
+      const timer = setTimeout(() => {
+        setNotification(prev => ({ ...prev, show: false }));
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification.show]);
+
   // Gestion des actions CRUD
   const handleAdd = () => {
     setSelectedPromotion(null);
@@ -213,10 +234,22 @@ const Promotions: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    const promotion = promotions.find(p => p.id === id);
-    if (promotion && window.confirm(`Êtes-vous sûr de vouloir supprimer la promotion ${promotion.nomPromotion} (${promotion.filiere}) ?`)) {
-      setPromotions(prev => prev.filter(p => p.id !== id));
-      showNotification('Promotion supprimée avec succès', 'success');
+    const promotionToDelete = promotions.find(p => p.id === id);
+    if (promotionToDelete) {
+      setPromotionToDelete(promotionToDelete);
+      setShowConfirmModal(true);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (promotionToDelete) {
+      setPromotions(prev => prev.filter(p => p.id !== promotionToDelete.id));
+      setNotification({
+        show: true,
+        message: 'Promotion supprimée avec succès',
+        type: 'success'
+      });
+      setPromotionToDelete(null);
     }
   };
 
@@ -310,7 +343,7 @@ const Promotions: React.FC = () => {
       field: 'anneeAcademique',
       headerName: 'ANNÉE ACADÉMIQUE',
       width: 180,
-      valueGetter: (value, row) => `${row.anneeDebut}-${row.anneeFin}`,
+      valueGetter: (_, row) => `${row.anneeDebut}-${row.anneeFin}`,
       renderCell: (params) => (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box component="span" sx={{ color: 'primary.main' }}>📅</Box>
@@ -401,7 +434,6 @@ const Promotions: React.FC = () => {
       disableColumnMenu: true,
       renderCell: (params) => (
         <ActionsMenu
-          promotion={params.row}
           onView={() => handleViewDetails(params.row)}
           onEdit={() => handleEdit(params.row)}
           onDelete={() => handleDelete(params.row.id)}
@@ -733,6 +765,7 @@ const Promotions: React.FC = () => {
         options={options}
         onCreateFiliere={handleCreateFiliere}
         onCreateOption={handleCreateOption}
+        existingPromotions={promotions}
       />
 
       <PromotionDetailsModal
@@ -740,6 +773,58 @@ const Promotions: React.FC = () => {
         promotion={selectedPromotion}
         onHide={() => setShowDetailsModal(false)}
       />
+
+      <ConfirmationModal
+        show={showConfirmModal}
+        onHide={() => setShowConfirmModal(false)}
+        onConfirm={handleConfirmDelete}
+        title="Confirmation de suppression"
+        message={`Êtes-vous sûr de vouloir supprimer la promotion ${promotionToDelete?.nomPromotion} (${promotionToDelete?.filiere}) ?`}
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        variant="danger"
+      />
+
+      {/* Notification flottante - À l'extérieur du modal */}
+      {notification.show && (
+        <Alert 
+          severity={notification.type === 'success' ? 'success' : 
+                   notification.type === 'error' ? 'error' : 
+                   notification.type === 'warning' ? 'warning' : 'info'}
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 99999,
+            minWidth: '350px',
+            maxWidth: '500px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '20px 24px',
+            fontSize: '18px',
+            fontWeight: '600',
+            textAlign: 'center'
+          }}
+        >
+          <div className="d-flex align-items-center justify-content-center">
+            <i className={`bi ${
+              notification.type === 'success' ? 'bi-check-circle-fill text-success' :
+              notification.type === 'error' ? 'bi-x-circle-fill text-danger' :
+              notification.type === 'warning' ? 'bi-exclamation-triangle-fill text-warning' :
+              'bi-info-circle-fill text-info'
+            } me-3`} style={{ fontSize: '24px' }}></i>
+            <span className="flex-grow-1">{notification.message}</span>
+            <button 
+              type="button" 
+              className="btn-close ms-3"
+              onClick={() => setNotification({ ...notification, show: false })}
+              style={{ fontSize: '16px' }}
+            ></button>
+          </div>
+        </Alert>
+      )}
     </Box>
   );
 };
