@@ -13,8 +13,10 @@ import {
   BellFill,
   BarChartFill,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  AwardFill
 } from 'react-bootstrap-icons';
+import './Sidebar.css';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -29,6 +31,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose, isMobile }) => {
     { path: '/espace-pedagogique', icon: <BookFill />, label: 'Espace Pédagogique' },
     { path: '/formateur', icon: <PersonBadgeFill />, label: 'Formateur' },
     { path: '/etudiant', icon: <PeopleFill />, label: 'Étudiant' },
+    { path: '/Promotion', icon: <AwardFill />, label: 'Promotion' },
   ];
 
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -52,7 +55,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose, isMobile }) => {
               const isActive = location.pathname === item.path;
               return (
                 <Nav.Item key={item.path}>
-                  <Nav.Link as={Link} to={item.path} active={isActive} onClick={() => onClose?.()}>
+                  <Nav.Link as={Link} to={item.path} active={isActive} onClick={() => onClose?.()}
+                    style={{
+                      transition: 'all 0.3s ease',
+                      borderRadius: '8px',
+                      margin: '2px 0'
+                    }}>
                     <span className="me-2">{item.icon}</span>
                     <span>{item.label}</span>
                   </Nav.Link>
@@ -67,6 +75,11 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose, isMobile }) => {
                 onClick={() => setSettingsOpen((s) => !s)}
                 className={`d-flex align-items-center px-3 py-2 ${settingsOpen ? 'active' : 'text-muted'}`}
                 aria-expanded={settingsOpen}
+                style={{
+                  transition: 'all 0.3s ease',
+                  borderRadius: '8px',
+                  margin: '2px 0'
+                }}
               >
                 <span className="me-2 text-dark"><GearFill /></span>
                 <span>Paramètre</span>
@@ -75,13 +88,13 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose, isMobile }) => {
 
               <Collapse in={settingsOpen}>
                 <div className="sidebar-submenu">
-                  <Nav.Link as={Link} to="/profile" className="px-3 py-2 d-flex align-items-center" onClick={() => onClose?.()}>
+                  <Nav.Link as={Link} to="/profile" className="px-3 py-2 d-flex align-items-center sidebar-submenu-item" onClick={() => onClose?.()}>
                     <PersonFill className="me-2" /> Profil
                   </Nav.Link>
-                  <Nav.Link as={Link} to="/notifications" className="px-3 py-2 d-flex align-items-center" onClick={() => onClose?.()}>
+                  <Nav.Link as={Link} to="/notifications" className="px-3 py-2 d-flex align-items-center sidebar-submenu-item" onClick={() => onClose?.()}>
                     <BellFill className="me-2" /> Notification
                   </Nav.Link>
-                  <Nav.Link as={Link} to="/rapports" className="px-3 py-2 d-flex align-items-center" onClick={() => onClose?.()}>
+                  <Nav.Link as={Link} to="/rapports" className="px-3 py-2 d-flex align-items-center sidebar-submenu-item" onClick={() => onClose?.()}>
                     <BarChartFill className="me-2" /> Rapports
                   </Nav.Link>
                 </div>
@@ -120,6 +133,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose, isMobile }) => {
                 to={item.path}
                 className={`d-flex align-items-center px-3 py-2 ${isActive ? 'active' : 'text-muted'}`}
                 onClick={() => onClose?.()}
+                style={{
+                  transition: 'all 0.3s ease',
+                  transform: isActive ? 'translateX(5px)' : 'translateX(0)',
+                  borderRadius: '8px',
+                  margin: '2px 0'
+                }}
               >
                 <span className="me-2" style={{ minWidth: 24, textAlign: 'center' }}>{item.icon}</span>
                 {!collapsed && <span>{item.label}</span>}

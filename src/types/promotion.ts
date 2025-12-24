@@ -20,7 +20,7 @@ export interface PromotionFormData {
   option: string;
   specialite: string;
   statut: 'Active' | 'Archivée';
-  nombreEtudiants: number;
+  nombreEtudiants?: number;
 }
 
 export interface FilterOptions {
