@@ -460,7 +460,14 @@ const Promotions: React.FC = () => {
         {/* Statistiques */}
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
           <Box sx={{ minWidth: 280, flex: '1 1 280px' }}>
-            <Card sx={{ boxShadow: 2 }}>
+            <Card sx={{ 
+              boxShadow: 2,
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                boxShadow: 6
+              }
+            }}>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Box>
@@ -489,7 +496,14 @@ const Promotions: React.FC = () => {
           </Box>
 
           <Box sx={{ minWidth: 280, flex: '1 1 280px' }}>
-            <Card sx={{ boxShadow: 2 }}>
+            <Card sx={{ 
+              boxShadow: 2,
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                boxShadow: 6
+              }
+            }}>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Box>
@@ -518,7 +532,14 @@ const Promotions: React.FC = () => {
           </Box>
 
           <Box sx={{ minWidth: 280, flex: '1 1 280px' }}>
-            <Card sx={{ boxShadow: 2 }}>
+            <Card sx={{ 
+              boxShadow: 2,
+              transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                boxShadow: 6
+              }
+            }}>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Box>
