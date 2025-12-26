@@ -138,7 +138,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onClose, isMobile }) => {
           >
             <span className="me-2"><GearFill /></span>
             {!collapsed && <span>Paramètre</span>}
-            <span className={`sidebar-chev ${settingsOpen ? 'open' : 'closed'}`}>{settingsOpen ? <ChevronUp /> : <ChevronDown />}</span>
+            {!collapsed && (
+              <span className={`sidebar-chev ${settingsOpen ? 'open' : 'closed'}`}>{settingsOpen ? <ChevronUp /> : <ChevronDown />}</span>
+            )}
           </Nav.Link>
 
           <Collapse in={settingsOpen}>

@@ -1,0 +1,57 @@
+.sidebar-toggle-icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: rgba(99,115,129,1);
+  transition: color 160ms ease, transform 180ms ease, background 160ms ease, box-shadow 160ms ease;
+  background: #fff;
+  border: none;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+}
+
+.sidebar-toggle-icon:hover{
+  color: #4361ee; /* primary */
+  background: rgba(67,97,238,0.04);
+  box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+}
+
+.sidebar-toggle-icon:focus{
+  outline: none;
+  box-shadow: 0 12px 28px rgba(15,23,42,0.08), 0 0 0 4px rgba(67,97,238,0.06);
+}
+
+.single-chevron{
+  display: inline-flex;
+  align-items: center;
+  transition: transform 160ms ease;
+}
+
+.single-chevron svg{
+  color: #cbd5e1; /* light gray for inactive chevron */
+  transition: color 160ms ease, transform 160ms ease;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.02));
+}
+
+.sidebar-toggle-icon:hover .single-chevron svg{
+  color: #4361ee; /* primary on hover */
+}
+
+.single-chevron.open{ transform: rotate(180deg); }
+
+.single-chevron.open svg{ transform: translateX(0px); }
+
+
+/* Reduce pointer target on mobile slightly, keep accessible */
+@media (max-width: 768px){
+  .sidebar-toggle-icon{ width:36px; height:36px; }
+}
+
+/* Brand specific colors */
+.brand-title{ margin: 0; }
+.brand-set{ color: #adb5bd; margin-right: 2px; }
+.brand-ice{ color: #4361ee; }
+
