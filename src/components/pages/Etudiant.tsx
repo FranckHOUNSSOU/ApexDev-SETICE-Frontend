@@ -151,6 +151,10 @@ const Etudiant: React.FC = () => {
   const [showDetailModal, setShowDetailModal] = useState<boolean>(false);
   const [selectedEtudiant, setSelectedEtudiant] = useState<Etudiant | null>(null);
   
+  // Référence et état pour la largeur du conteneur
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  
   // États des filtres
   const [filtres, setFiltres] = useState<FiltreEtudiant>({
     filiere: '',
@@ -182,6 +186,26 @@ const Etudiant: React.FC = () => {
   useEffect(() => {
     appliquerFiltres();
   }, [etudiants]);
+
+  // Mesurer la largeur du conteneur
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    // Mesurer initialement
+    updateWidth();
+
+    // Écouter les redimensionnements
+    window.addEventListener('resize', updateWidth);
+
+    // Nettoyer
+    return () => {
+      window.removeEventListener('resize', updateWidth);
+    };
+  }, []);
 
   const fetchEtudiants = async () => {
     setLoading(true);
@@ -421,7 +445,12 @@ const Etudiant: React.FC = () => {
   };
 
   return (
-    <Container fluid className="py-4" style={{ minHeight: 'calc(100vh - 100px)' }}>
+    <Container 
+      fluid 
+      className="py-4" 
+      style={{ minHeight: 'calc(100vh - 100px)' }}
+      ref={containerRef}
+    >
       {/* Modal de suppression multiple */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
         <Modal.Header closeButton className="border-0 pb-0">
@@ -603,8 +632,69 @@ const Etudiant: React.FC = () => {
         </Col>
       </Row>
 
-      
-      
+      {/* Barre de recherche */}
+      <Card className="mb-4 border-0 shadow-sm">
+        <Card.Body className="p-3">
+          <Row className="align-items-center">
+            <Col md={6}>
+              <InputGroup>
+                <InputGroup.Text className="bg-white border-end-0">
+                  <Search size={18} className="text-muted" />
+                </InputGroup.Text>
+                <Form.Control
+                  type="search"
+                  placeholder="Rechercher un étudiant par nom, prénom, email ou ID..."
+                  value={filtres.recherche}
+                  onChange={(e) => setFiltres({...filtres, recherche: e.target.value})}
+                  className="border-start-0"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      appliquerFiltres();
+                    }
+                  }}
+                />
+                {filtres.recherche && (
+                  <Button
+                    variant="link"
+                    className="text-muted border"
+                    onClick={() => setFiltres({...filtres, recherche: ''})}
+                  >
+                    <X size={18} />
+                  </Button>
+                )}
+              </InputGroup>
+            </Col>
+            <Col md={6} className="mt-3 mt-md-0">
+              <div className="d-flex justify-content-md-end align-items-center gap-2">
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  className="d-flex align-items-center gap-2"
+                >
+                  <FileText size={16} />
+                  <span className="d-none d-md-inline">Exporter</span>
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  className="d-flex align-items-center gap-2"
+                >
+                  <Download size={16} />
+                  <span className="d-none d-md-inline">Télécharger</span>
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  className="d-flex align-items-center gap-2"
+                >
+                  <Settings size={16} />
+                  <span className="d-none d-md-inline">Colonnes</span>
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
 
       {/* Panneau des filtres */}
       {showFilters && (
@@ -937,6 +1027,24 @@ const Etudiant: React.FC = () => {
               </Button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Indicateur de largeur du conteneur (optionnel - pour débogage) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{
+          position: 'fixed',
+          bottom: 10,
+          right: 10,
+          background: 'rgba(0,0,0,0.8)',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          zIndex: 9999,
+          fontFamily: 'monospace'
+        }}>
+          Container: {containerWidth}px
         </div>
       )}
     </Container>
