@@ -26,7 +26,7 @@ function MainLayout({ toggleSidebar, sidebarCollapsed, isMobile }: { toggleSideb
       {isMobile && !sidebarCollapsed && <div className="sidebar-overlay" onClick={toggleSidebar} />}
       {/* Sidebar fixe sur desktop */}
       {!isMobile && <Sidebar collapsed={sidebarCollapsed} />}
-      <Navbar toggleSidebar={toggleSidebar} />
+      <Navbar toggleSidebar={toggleSidebar} sidebarCollapsed={sidebarCollapsed} />
       <Container fluid style={{ paddingTop: 70, paddingLeft: 0, paddingRight: 0 }}>
         <Row>
           {/* calculer la largeur pour que la colonne n'occupe que l'espace à droite de la sidebar */}

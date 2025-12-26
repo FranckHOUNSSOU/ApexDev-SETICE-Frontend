@@ -1,34 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
+
 /* Styles généraux */
-html, body, #root {
+:root {
+  --font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial;
+}
+
+html,
+body,
+#root {
   height: 100%;
   overflow-y: auto; /* enable page scrolling so the single scrollbar controls main-content + footer */
   overflow-x: hidden; /* prevent horizontal scrolling globally */
   box-sizing: border-box;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0f1720;
 }
-*, *::before, *::after { box-sizing: inherit; }
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
 
 /* Style discret de la barre de défilement (WebKit/Blink) et fallback fin pour Firefox */
-html::-webkit-scrollbar, body::-webkit-scrollbar {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
   background: transparent;
 }
-html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.12);
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0,0,0,0.22);
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.22);
 }
 
 /* Firefox - réglages */
-html, body {
+html,
+body {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.12) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
 }
 
 .app-container {
@@ -52,7 +74,7 @@ html, body {
   margin: 16px auto;
   padding: 16px;
   box-sizing: border-box;
-} 
+}
 
 /* Barre latérale */
 .sidebar-col {
@@ -63,11 +85,15 @@ html, body {
 /* Couleurs des liens dans la barre latérale : inactifs gris, actifs bleu */
 .sidebar .nav-link {
   color: #6c757d; /* gris neutre pour éléments non actifs */
+  font-size: 0.5rem; /* réduit pour une apparence plus compacte */
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
 }
 
 .sidebar .nav-link.active {
   color: #0d6efd !important; /* couleur primaire pour élément actif */
   font-weight: 500;
+  font-size: 0.5rem;
 }
 
 .sidebar .nav-link:hover {
@@ -118,7 +144,7 @@ html, body {
 
 .sidebar-submenu .nav-link {
   padding-left: 1.6rem;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: #6c757d;
 }
 
@@ -134,13 +160,14 @@ html, body {
   height: 28px;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
-  color: #6c757d;
+  border-radius: 50%;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    transform 0.15s ease;
+  color: #46484a;
 }
 
 .sidebar-chev.open {
-  background: rgba(13,110,253,0.08);
+  background: rgba(13, 110, 253, 0.08);
   color: #0d6efd;
   transform: rotate(0deg);
 }
@@ -157,7 +184,7 @@ html, body {
     margin: 8px 8px;
     padding: 12px;
   }
-} 
+}
 
 .sidebar-link {
   color: #7f8489;
@@ -169,17 +196,16 @@ html, body {
   transition: all 0.2s;
 }
 
-
 .sidebar-link:hover {
   background-color: #e9ecef;
-  color: #D4AF37; 
-  border-left-color: #D4AF37;
+  color: #d4af37;
+  border-left-color: #d4af37;
 }
 
 .sidebar-link.active {
   background-color: #e9ecef;
   color: #50c7f6;
-  border-left-color: #D4AF37;
+  border-left-color: #d4af37;
   font-weight: 500;
 }
 
@@ -190,7 +216,7 @@ html, body {
 }
 
 .sidebar-text {
-  color:  #828282;
+  color: #828282;
   margin-left: 10px;
   white-space: nowrap;
   overflow: hidden;
@@ -243,10 +269,9 @@ html, body {
   overflow-x: hidden; /* ensure icons/text don't overflow */
 }
 
-
 /* Footer */
 .footer {
-  background-color:#ffffffc8;
+  background-color: #ffffffc8;
   display: flex;
   justify-content: end;
   height: 1.5rem;
@@ -262,7 +287,7 @@ html, body {
   height: 56px;
   display: flex;
   align-items: center;
-} 
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -298,7 +323,7 @@ html, body {
     right: 0;
     bottom: 0;
     top: 56px;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1020;
   }
 }
@@ -322,13 +347,13 @@ html, body {
 /* Cards améliorées */
 .card {
   border: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Boutons */

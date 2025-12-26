@@ -5,9 +5,7 @@ import { Card, Navbar, Container } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import DataTable from "react-data-table-component";
 import { OverlayTrigger, Popover, PopoverBody, Button } from "react-bootstrap";
-
-import { Badge } from "react-bootstrap";
-import AjoutEspaceModal from "./EspacePedagogique/AjoutEspaceModal";
+import AjoutEspaceModal from "D:/GL/SETICE Frontend/src/components/pages/EspacePedagogique/AjoutEspaceModal/AjoutEspaceModal.tsx";
 //import rdata from "../../../../../listes/servicesCopy.json";
 const EspacePedagogique = (props: any) => {
   const [showAjoutEspaceModal, setShowAjoutEspaceModal] = useState(false);
@@ -25,20 +23,14 @@ const EspacePedagogique = (props: any) => {
   const fetchEspaces = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:3000/espace-pedagique");
+      const res = await axios.get("http://localhost:3000/espace-pedagogique");
       let data = res.data;
       // support several possible response shapes
       if (data?.result) data = data.result;
       else if (data?.results) data = data.results;
-      if (!Array.isArray(data)) data = Array.isArray(data) ? data : [];
-      // add serial index for display purposes and extract nested fields
-      const mapped = (data || []).map((item: any, idx: number) => {
-        const util = item?.formateur?.utilisateur;
-        const formateurName = util ? `${util.prenom || ""} ${util.nom || ""}`.trim() : "";
-        const promotionInfo = item?.promotion ? `${item.promotion.anneeAcademique || ""} ${item.promotion.filiere || ""} ${item.promotion.options || ""}`.trim() : "";
-        return { ...item, __index: idx + 1, formateurName, promotionInfo };
-      });
-      setEspaces(mapped);
+      if (!Array.isArray(data)) data = [];
+      // store raw array response (derived fields computed at render time)
+      setEspaces(data);
     } catch (err) {
       console.error("Erreur fetch espaces:", err);
       setEspaces([]);
@@ -54,36 +46,48 @@ const EspacePedagogique = (props: any) => {
 
   const columns = [
     {
-      name: <h5 className="fs-8">S/N</h5>,
+      name:"N°",
       width: "70px",
-      cell: (row: any) => row.__index,
+      cell: (row: any) => {
+        const idx = espaces.indexOf(row);
+        return idx >= 0 ? idx + 1 : "-";
+      },
     },
     {
-      name: <h5 className="fs-8">Nom</h5>,
-      minWidth: "200px",
-      cell: (row: any) => row.nom || row.name || "-",
+      name:"Nom de l'espace",
+      cell: (row: any) => row.nom,
       sortable: true,
     },
     {
-      name: <h5 className="fs-8">Matière</h5>,
-      width: "120px",
-      cell: (row: any) => (
-        <Badge className="fw-bold" bg="light">
-          {row.matiere || "-"}
-        </Badge>
-      ),
+      name:"Description",
+      cell: (row: any) => row.description,
       sortable: true,
     },
     {
-      name: <h5 className="fs-8">Formateur</h5>,
+      name:"Matière",
+      cell: (row: any) => row.matiere,
+      sortable: true,
+    },
+    {
+      name:"Formateur",
       minWidth: "180px",
-      cell: (row: any) => row.formateurName || (row.formateur?.utilisateur ? `${row.formateur.utilisateur.prenom || ""} ${row.formateur.utilisateur.nom || ""}`.trim() : "" ) || "",
+      cell: (row: any) => row.formateur.utilisateur.nom + " " + row.formateur.utilisateur.prenom ||" ",
       sortable: true,
     },
     {
-      name: <h5 className="fs-8">Promotion</h5>,
-      width: "110px",
-      cell: (row: any) => row.promotionInfo || (row.promotion ? `${row.promotion.anneeAcademique || ""} ${row.promotion.filiere || ""} ${row.promotion.options || ""}`.trim() : "-") || "-",
+      name: "Promotion",
+      cell: (row: any) => {
+        return(
+          <div>
+            <div>
+              {row.promotion.filiere}/{row.promotion.options}
+            </div>
+            <div className="text-muted" style={{ fontSize: "0.6rem" }}>
+              {row.promotion.anneeAcademique}
+            </div>
+          </div>
+        )
+      },
       sortable: true,
     },
     {
@@ -91,7 +95,7 @@ const EspacePedagogique = (props: any) => {
       width: "90px",
       center: true,
       cell: (row: any) => {
-        const rowId = row.id || row._id || row.objectId || row.__index;
+        const rowId = row.id
         return (
           <>
             <OverlayTrigger
@@ -198,7 +202,7 @@ const EspacePedagogique = (props: any) => {
       <div className={"Services"}>
         <Card>
           <Card.Body>
-            <div className="mb-5" style={{ height: "2rem" }}>
+            <div className="mb-1" style={{ height: "2rem" }}>
               {selectedRows?.length > 0 && (
                 <>
                   <div
@@ -209,7 +213,7 @@ const EspacePedagogique = (props: any) => {
                     }}
                   >
                     <span style={{ fontSize: "1rem" }}>
-                      {selectedRows?.length} Service(s)
+                      {selectedRows?.length} Espace(s) pédagogique(s)
                     </span>
                     <Button
                       variant="light"

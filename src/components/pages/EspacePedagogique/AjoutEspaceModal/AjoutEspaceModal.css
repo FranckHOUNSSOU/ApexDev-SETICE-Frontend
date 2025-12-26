@@ -1,0 +1,82 @@
+.ep-modal-dialog .modal-content {
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(22, 27, 34, 0.06);
+  border: 1px solid rgba(16, 24, 32, 0.04);
+  overflow: hidden;
+}
+
+.ep-modal-header {
+  padding: 20px 24px;
+  border-bottom: none;
+}
+
+.ep-modal-subtitle {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.ep-modal-body {
+  padding: 20px 24px;
+}
+
+.ep-form-label {
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.ep-divider {
+  border-top: 1px solid #e9ecef;
+  margin: 12px 0 16px;
+}
+
+.ep-char-counter {
+  color: #6c757d;
+  font-size: 0.78rem;
+}
+
+.ep-suggestions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #fff;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 6px 18px rgba(22, 27, 34, 0.06);
+  border-radius: 8px;
+  max-height: 220px;
+  overflow: auto;
+  z-index: 2000;
+}
+
+.ep-suggestion-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #1f2d3d;
+}
+
+.ep-suggestion-item:hover,
+.ep-suggestion-item.active {
+  background: #f8f9fa;
+}
+
+.ep-suggestion-empty {
+  padding: 10px 14px;
+  color: #6c757d;
+}
+
+.ep-btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  box-shadow: none;
+}
+
+.ep-btn-outline {
+  border-radius: 6px;
+}
+
+/* Slightly reduce backdrop darkness for a cleaner look */
+.modal-backdrop.show {
+  opacity: 0.38;
+}

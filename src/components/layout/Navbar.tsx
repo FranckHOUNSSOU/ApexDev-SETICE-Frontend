@@ -1,39 +1,61 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import HeaderUserbox from './Navbar/userbox';
-// Styles locaux pour le dégradé du logo
+import logo from '../../assets/insigne.png';
+import './Navbar.css';
+// Brand style (split into two colored spans: SET / ICE)
 const brandStyle: React.CSSProperties = {
-  fontSize: '1.5rem',
+  fontSize: '1.25rem',
   fontWeight: 800,
   marginBottom: '0',
-  background: 'linear-gradient(135deg, #4361ee 0%, #4cc9f0 100%)',
-  WebkitBackgroundClip: 'text' as any,
-  WebkitTextFillColor: 'transparent' as any,
+  letterSpacing: '0.2px'
 };
+
+
+const brandWrapper: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 12,
+};
+
+const brandLogoStyle: React.CSSProperties = {
+  width: 36,
+  height: 36,
+  objectFit: 'contain',
+  borderRadius: 6,
+};
+
+import { CaretRightFill } from 'react-bootstrap-icons';
 
 interface NavbarProps {
   toggleSidebar: () => void;
+  sidebarCollapsed: boolean;
 }
 
-const CustomNavbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
+const CustomNavbar: React.FC<NavbarProps> = ({ toggleSidebar, sidebarCollapsed }) => {
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed='top' style={{ zIndex: 1040, height: 56 }}>
       <Container fluid>
         <Navbar.Brand as={Link} to="/">
-          <h1 style={brandStyle}>SETICE</h1>
+          <div style={brandWrapper}>
+            <img src={logo} alt="SETICE" style={brandLogoStyle} />
+            <h1 style={brandStyle} className="brand-title"><span className="brand-set">SET</span><span className="brand-ice">ICE</span></h1>
+          </div>
         </Navbar.Brand>
-         <Button 
-          variant="outline-dark" 
+        <span
+          role="button"
+          tabIndex={0}
           onClick={toggleSidebar}
-          className="me-3"
-          style={{ width: 40, height: 40, padding: 0, borderRadius: 6 }}
-          aria-label="Toggle sidebar"
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleSidebar(); } }}
+          className="me-3 sidebar-toggle-icon"
+          aria-label={sidebarCollapsed ? 'Ouvrir le menu' : 'Fermer le menu'}
         >
-          ☰
-        </Button>
+          <span className={`single-chevron ${sidebarCollapsed ? '' : 'open'}`} aria-hidden="true">
+            <CaretRightFill size={18} />
+          </span>
+        </span>
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <div className="navbar-nav">
            <HeaderUserbox/>
