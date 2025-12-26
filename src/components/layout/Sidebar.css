@@ -1,0 +1,51 @@
+/* Sidebar hover effects */
+.nav-link {
+  transition: all 0.3s ease !important;
+  border-radius: 8px !important;
+  margin: 2px 0 !important;
+}
+
+.nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  transform: translateX(5px);
+}
+
+.nav-link.active {
+  background-color: rgba(0, 123, 255, 0.1) !important;
+  transform: translateX(5px);
+}
+
+/* Sidebar submenu hover effects */
+.sidebar-submenu-item {
+  transition: all 0.3s ease !important;
+  border-radius: 6px !important;
+  margin: 1px 0 !important;
+}
+
+.sidebar-submenu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  transform: translateX(3px);
+}
+
+.sidebar-submenu-item.active {
+  background-color: rgba(0, 123, 255, 0.1) !important;
+  transform: translateX(3px);
+}
+
+/* Settings button hover effect */
+.nav-link[aria-expanded="false"]:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Chevron animation */
+.sidebar-chev {
+  transition: transform 0.3s ease;
+}
+
+.sidebar-chev.open {
+  transform: rotate(180deg);
+}
+
+.sidebar-chev.closed {
+  transform: rotate(0deg);
+}

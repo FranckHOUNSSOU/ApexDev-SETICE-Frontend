@@ -8,9 +8,14 @@ import Dashboard from './components/pages/Dashboard';
 import EspacePedagogique from './components/pages/EspacePedagogique';
 import Formateur from './components/pages/Formateur';
 import Etudiant from './components/pages/Etudiant';
+import Promotion from './components/pages/Promotions/Promotions';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Profile from './components/pages/Parametres/Profile';
+import Notifications from './components/pages/Parametres/Notifications';
+import Rapports from './components/pages/Parametres/Rapports';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './styles/App.css';
 
 function MainLayout({ toggleSidebar, sidebarCollapsed, isMobile }: { toggleSidebar: () => void; sidebarCollapsed: boolean; isMobile: boolean }) {
@@ -82,7 +87,11 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/espace-pedagogique" element={<EspacePedagogique />} />
           <Route path="/formateur" element={<Formateur />} />
+          <Route path="/Promotion" element={<Promotion />} />
           <Route path="/etudiant" element={<Etudiant />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/rapports" element={<Rapports />} />
         </Route>
       </Routes>
     </Router>

@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DataTable, { type TableColumn } from "react-data-table-component";
+import axios from "axios";
 
 type Formateur = {
   id: number;
-  nom: string;
-  prenom: string;
-  email: string;
-  telephone: string;
+  utilisateur: {
+    id: number;
+    nom: string;
+    prenom: string;
+    email: string;
+    telephone: string;
+    actif: boolean;
+    dateCreation: string;
+    role: string;
+  };
   specialite: string;
-  actif: boolean;
 };
 
 
@@ -16,53 +22,8 @@ const GestionFormateurs: React.FC = () => {
   // =======================
   // STATES
   // =======================
- const [formateurs, setFormateurs] = useState<Formateur[]>([
-  {
-      id: 1,
-      nom: "Dupont",
-      prenom: "Jean",
-      email: "jean.dupont@example.com",
-      telephone: "0123456789",
-      specialite: "Cardiologie",
-      actif: true
-    },
-    {
-      id: 2,
-      nom: "Martin",
-      prenom: "Marie",
-      email: "marie.martin@example.com",
-      telephone: "0234567891",
-      specialite: "Pédiatrie",
-      actif: true
-    },
-    {
-      id: 3,
-      nom: "Bernard",
-      prenom: "Pierre",
-      email: "pierre.bernard@example.com",
-      telephone: "0345678912",
-      specialite: "Chirurgie",
-      actif: false
-    },
-    {
-      id: 4,
-      nom: "Dubois",
-      prenom: "Sophie",
-      email: "sophie.dubois@example.com",
-      telephone: "0456789123",
-      specialite: "Dermatologie",
-      actif: true
-    },
-    {
-      id: 5,
-      nom: "Leroy",
-      prenom: "Thomas",
-      email: "thomas.leroy@example.com",
-      telephone: "0567891234",
-      specialite: "Neurologie",
-      actif: true
-    }
-]);
+ const [formateurs, setFormateurs] = useState<Formateur[]>([]);
+ const [loading, setLoading] = useState(true);
 
 
   const [search, setSearch] = useState("");
@@ -73,22 +34,37 @@ const GestionFormateurs: React.FC = () => {
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
-  const [specialite, setspecialite] = useState("Formateur");
+  const [specialite, setspecialite] = useState("JAVA");
   const [actif, setActif] = useState(true);
+
+  // Fetch data on mount
+  useEffect(() => {
+    const fetchFormateurs = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/formateur');
+        setFormateurs(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des formateurs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFormateurs();
+  }, []);
 
   // =======================
   // RECHERCHE
   // =======================
   const filteredFormateurs = formateurs.filter(
     (f) =>
-      f.nom.toLowerCase().includes(search.toLowerCase()) ||
-      f.email.toLowerCase().includes(search.toLowerCase())
+      f.utilisateur.nom.toLowerCase().includes(search.toLowerCase()) ||
+      f.utilisateur.email.toLowerCase().includes(search.toLowerCase())
   );
 
   // =======================
   // AJOUT FORMATEUR
   // =======================
-  const handleAddFormateur = () => {
+  const handleAddFormateur = async () => {
    
     // Validation des champs requis
   if (!nom || !email) {
@@ -153,24 +129,29 @@ const GestionFormateurs: React.FC = () => {
 
     return;
   }
-    const newFormateur: Formateur = {
-      id: Date.now(),
-      nom,
-      prenom,
-      email,
-      telephone,
-      specialite,
-      actif,
-    };
+  const data = {
+    nom,
+    prenom,
+    email,
+    telephone,
+    specialite,
+  };
 
-    setFormateurs([...formateurs, newFormateur]);
+  try {
+    await axios.post('http://localhost:3000/formateur', data);
+    // Refetch data
+    const response = await axios.get('http://localhost:3000/formateur');
+    setFormateurs(response.data);
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du formateur:", error);
+  }
 
     // reset formulaire
     setNom("");
     setPrenom("");
     setEmail("");
     setTelephone("");
-    setspecialite("Formateur");
+    setspecialite("JAVA");
     setActif(true);
 
     // fermer le formulaire
@@ -183,22 +164,22 @@ const GestionFormateurs: React.FC = () => {
   const columns: TableColumn<Formateur>[] = [
     {
       name: "Nom",
-      selector: (row) => row.nom,
+      selector: (row) => row.utilisateur.nom,
       sortable: true,
     },
      {
       name: "Prenom",
-      selector: (row) => row.prenom,
+      selector: (row) => row.utilisateur.prenom,
       sortable: true,
     },
 
     {
       name: "Email",
-      selector: (row) => row.email,
+      selector: (row) => row.utilisateur.email,
     },
     {
       name: "Telephone",
-      selector: (row) => row.telephone,
+      selector: (row) => row.utilisateur.telephone,
     },
     {
       name: "Rôle",
@@ -212,11 +193,11 @@ const GestionFormateurs: React.FC = () => {
             padding: "4px 10px",
             borderRadius: "12px",
             fontSize: "12px",
-            backgroundColor: row.actif ? "#dcfce7" : "#fee2e2",
-            color: row.actif ? "#166534" : "#991b1b",
+            backgroundColor: row.utilisateur.actif ? "#dcfce7" : "#fee2e2",
+            color: row.utilisateur.actif ? "#166534" : "#991b1b",
           }}
         >
-          {row.actif ? "Actif" : "Inactif"}
+          {row.utilisateur.actif ? "Actif" : "Inactif"}
         </span>
       ),
     },
@@ -224,9 +205,15 @@ const GestionFormateurs: React.FC = () => {
       name: "Actions",
       cell: (row) => (
         <button
-          onClick={() =>
-            setFormateurs(formateurs.filter((f) => f.id !== row.id))
-          }
+          onClick={async () => {
+            try {
+              await axios.delete(`http://localhost:3000/formateur/${row.id}`);
+              const response = await axios.get('http://localhost:3000/formateur');
+              setFormateurs(response.data);
+            } catch (error) {
+              console.error("Erreur lors de la suppression:", error);
+            }
+          }}
           style={{
             background: "transparent",
             border: "none",
@@ -243,6 +230,14 @@ const GestionFormateurs: React.FC = () => {
   // =======================
   // RENDER
   // =======================
+  if (loading) {
+    return (
+      <div style={{ maxWidth: "1100px", margin: "40px auto", padding: "20px", textAlign: "center" }}>
+        <p>Chargement des formateurs...</p>
+      </div>
+    );
+  }
+
   return (
     <div style={{// maxWidth: "1100px", margin: "40px auto", padding: "20px",
 
@@ -331,6 +326,7 @@ const GestionFormateurs: React.FC = () => {
             onChange={(e) => setspecialite(e.target.value)}
             style={{ width: "45%", padding: "10px", marginBottom: "10px",borderRadius:"10px" }}
           >
+            <option>JAVA</option>
             <option>Formateur</option>
             <option>Responsable pédagogique</option>
           </select>
@@ -377,6 +373,7 @@ const GestionFormateurs: React.FC = () => {
             style={{ padding: "8px", width: "250px",borderRadius:"10px" }}
           />
         }
+        noDataComponent={<p>Aucun formateur trouvé. Vérifiez la connexion au backend ou ajoutez des données.</p>}
       />
     </div>
   );

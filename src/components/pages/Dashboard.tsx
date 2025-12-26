@@ -2,6 +2,7 @@
 import React from 'react';
 import {Card,CardBody,Row,Col,Button} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import DataTable from 'react-data-table-component';
 // Utilisez les bons noms d'icônes
 import { 
   BarChartFill, 
@@ -39,6 +40,27 @@ const Dashboard: React.FC = () => {
     value: '78%',
     icon:<BarChartFill size={30} />,
     color: "info",
+    link: "missed",
+  },
+  {
+    label: "Total de Promotions",
+    value: '8',
+    icon:<BarChartFill size={30} />,
+    color: "info",
+    link: "missed",
+  },
+  {
+    label: "Promotions actives",
+    value: '3',
+    icon:<BarChartFill size={30} />,
+    color: "success",
+    link: "missed",
+  },
+  {
+    label: "Promotions archivées",
+    value: '2',
+    icon:<BarChartFill size={30} />,
+    color: "warning",
     link: "missed",
   },
   
@@ -81,23 +103,43 @@ const Dashboard: React.FC = () => {
           );
         })}
       </div>
-      <Row>
-        <Col md={12}>
-          <Card className="mb-4">
-            <Card.Header>
-              <Card.Title>Activité récente</Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">Nouveau cours ajouté: "React Avancé"</li>
-                <li className="list-group-item">5 nouveaux étudiants inscrits</li>
-                <li className="list-group-item">3 devoirs soumis aujourd'hui</li>
-                <li className="list-group-item">Mise à jour du système terminée</li>
-              </ul>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      <div className={"mt-7"}>
+        <Card>
+          <Card.Body>
+            <h2 className="mb-6">Upcoming Appointment(s)</h2>
+            <DataTable
+              /*data={rdata.result.results.filter((r:any, i:number)=> {
+                console.log(r, i)
+                return i<=3
+              })}
+              noTableHead
+              customStyles={{
+                rows: {
+                  style: {
+                    border: "1px solid #e9ecef",
+                    borderRadius: "0.5rem",
+                    marginBottom: "0.5rem",
+                    padding: "0.5rem",
+                    cursor: "pointer",
+                    "&:hover": {
+                      borderColor: "#007bff",
+                    },
+                  },
+                },
+              }}*/
+              noDataComponent={
+                <div
+                  className={
+                    "min-h-350px d-flex align-items-center justify-content-center"
+                  }
+                >
+                  <h1>No upcoming appointment</h1>
+                </div>
+              }
+            />
+          </Card.Body>
+        </Card>
+      </div>
     </div>
   );
 };
